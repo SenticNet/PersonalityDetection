@@ -15,7 +15,7 @@ def build_data_cv(datafile, cv=10, clean_string=True):
     revs = []
     vocab = defaultdict(float)
 
-    with open(datafile, "rb") as csvf:
+    with open(datafile, "r", encoding = 'cp1252') as csvf:
         csvreader=csv.reader(csvf,delimiter=',',quotechar='"')
         first_line=True
         for line in csvreader:
