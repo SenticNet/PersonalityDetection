@@ -93,7 +93,8 @@ def load_bin_vec(fname, vocab):
         header = f.readline()
         vocab_size, layer1_size = map(int, header.split())
         binary_len = np.dtype(theano.config.floatX).itemsize * layer1_size
-        for line in xrange(vocab_size):
+        for line in range(vocab_size):
+            # changed from xrange to range in python 3+ implemenatations
             word = []
             while True:
                 ch = f.read(1)
