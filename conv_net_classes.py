@@ -13,7 +13,8 @@ import numpy
 import theano.tensor.shared_randomstreams
 import theano
 import theano.tensor as T
-from theano.tensor.signal import downsample
+# from theano.tensor.signal import downsample
+from theano.tensor.signal import pool
 from theano.tensor.nnet import conv
 
 def ReLU(x):

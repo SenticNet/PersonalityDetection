@@ -435,7 +435,7 @@ if __name__=="__main__":
 
     r = range(0,10)
 
-    ofile=file('perf_output_'+str(attr)+'.txt','w')
+    ofile=open('perf_output_'+str(attr)+'.txt','w')
 
     charged_words=[]
 
