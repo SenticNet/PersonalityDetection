@@ -5,7 +5,7 @@ from collections import defaultdict
 import sys, re
 import pandas as pd
 import csv
-import getpass
+from gensim.models import KeyedVectors
 
 
 def build_data_cv(datafile, cv=10, clean_string=True):
@@ -89,25 +89,14 @@ def load_bin_vec(fname, vocab):
     Loads 300x1 word vecs from Google (Mikolov) word2vec
     """
     word_vecs = {}
-    with open(fname, "rb") as f:
-        header = f.readline()
-        vocab_size, layer1_size = map(int, header.split())
-        binary_len = np.dtype(theano.config.floatX).itemsize * layer1_size
-        for line in xrange(vocab_size):
-            word = []
-            while True:
-                ch = f.read(1)
-                if ch == ' ':
-                    word = ''.join(word)
-                    break
-                if ch != '\n':
-                    word.append(ch)
-            if word in vocab:
-               word_vecs[word] = np.fromstring(f.read(binary_len), dtype=theano.config.floatX)
-            else:
-                f.read(binary_len)
+    model = KeyedVectors.load_word2vec_format(fname, binary=True)
+    for word in vocab:
+        try:
+            word_vecs[word] = model.get_vector(word)
+        except KeyError:
+            # Word not in the vocabulary
+            pass
     return word_vecs
-
 def add_unknown_words(word_vecs, vocab, min_df=1, k=300):
     """
     For words that occur in at least min_df documents, create a separate word vector.
